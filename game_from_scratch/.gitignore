@@ -4,6 +4,7 @@
 # Build -----------------------------------------------------------------------
 
 ### Output and Cache Directories ###
+/.vs/game_from_scratch/v15/*.opendb
 /External/
 /Debug/
 /Docs/
@@ -22,7 +23,8 @@ cmake_install.cmake
 install_manifest.txt
 
 # Language --------------------------------------------------------------------
-
+*.ipch
+*.db
 ### C++ ###
 # Compiled Object files
 *.slo
