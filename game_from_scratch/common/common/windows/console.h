@@ -2,9 +2,10 @@
 #define __CONSOLE_GUARD__
 
 #include <iostream>
-#include "common/string.h"
+#include <common/collections/string.h>
+#include <common/system/system.h>
 
-class Console {
+class COMMON Console {
 public:
 	static void writeln(String str) {
 		//std::cout << str << std::endl;

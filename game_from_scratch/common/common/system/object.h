@@ -1,7 +1,8 @@
 #ifndef __OBJECT_GUARD__
 #define __OBJECT_GUARD__
+#include <common/system/system.h>
 
-class Object {
+class COMMON Object {
 
 };
 
