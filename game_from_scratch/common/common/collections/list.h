@@ -16,7 +16,7 @@ public:
 	void Insert(T item, uint32_t index) { Collection<T>::Insert(item, index); }
 	void RemoveAt(uint32_t index, bool shrink = false) { Collection<T>::RemoveAt(index, shrink); }
 	void Remove(T item) { not_implemented(); }
-	void Clear(bool shrink = false) { Collection<T>::Clear(shrink); }
+	void Clear(bool shrink = true) { Collection<T>::Clear(shrink); }
 	void SetCapacity(size_t capacity) { Collection<T>::SetCapacity(capacity); }
 
 	virtual ~List() {

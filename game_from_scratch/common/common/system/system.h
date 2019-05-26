@@ -2,6 +2,7 @@
 #define __SYSTEM_GUARD_H
 
 #include <stdint.h>
+#include <stdlib.h>
 
 #define COMMON __declspec(dllexport)
 

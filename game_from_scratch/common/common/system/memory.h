@@ -2,7 +2,6 @@
 #define __MEMORY_GUARD__
 
 #include <common/diagnostics/assertion.h>
-#include <cstdlib>
 #include <common/system/system.h>
 
 class COMMON Memory {

@@ -33,16 +33,20 @@ public:
 	}
 
 	virtual ~Collection() {
-		delete[] _head;
+		free(_head);
 	}
 
 	inline T* GetHead() { return _head; }
 	inline size_t Size() { return _size; }
 	inline size_t Capacity() { return _capacity; }
-	inline T& operator[] (int index) { return _head[index]; }
+	inline T& operator[] (uint32_t index) { return _head[index]; }
 
 protected:
-	void Push(T* items, size_t count) {
+	void Push(T item) {
+		PushRange(&item, 1);
+	}
+
+	void PushRange(T* items, size_t count) {
 		if (_size >= _capacity) {
 			SetCapacity(_capacity + count);
 		}
@@ -80,22 +84,19 @@ protected:
 		if (_capacity == capacity) {
 			return;
 		}
-		
 		_capacity = capacity;
+		T* newPtr = nullptr;
 		if (_capacity > 0) {
 			ensure_intmul_no_overflow(_capacity, sizeof(T));
 			T* copy = (T*)Memory::Malloc(_capacity * sizeof(T));
 			memcpy(copy, _head, _size * sizeof(T));
-			delete[] _head;
-			_head = copy;
+			newPtr = copy;
 		}
-		else {
-			_head = nullptr;
-		}
+		free(_head);
+		_head = newPtr;
 	}
 
-	void Clear(bool shrink = false) {
-		delete[] _head;
+	void Clear(bool shrink = true) {
 		_size = 0;
 		if (shrink) {
 			SetCapacity(0);
@@ -107,7 +108,7 @@ private:
 		_size = 0;
 		_head = nullptr;
 		if (items != nullptr) {
-			Push(items, itemCount);
+			PushRange(items, itemCount);
 			if (capacity > itemCount) {
 				SetCapacity(capacity);
 			}
