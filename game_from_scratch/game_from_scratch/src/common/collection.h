@@ -61,8 +61,9 @@ protected:
 			return;
 		}
 		_capacity = capacity;
+		
 		T* copy = (T*)malloc(_capacity * sizeof(T));
-		memcpy(copy, _data, _capacity * sizeof(T));
+		memcpy(copy, _data, _size * sizeof(T));
 		delete[] _data;
 		_data = copy;
 	}

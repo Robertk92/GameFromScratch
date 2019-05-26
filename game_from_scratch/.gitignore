@@ -25,6 +25,11 @@ install_manifest.txt
 # Language --------------------------------------------------------------------
 *.ipch
 *.db
+*.tlog
+*.iobj
+*.ipdb
+*.idb
+
 ### C++ ###
 # Compiled Object files
 *.slo
