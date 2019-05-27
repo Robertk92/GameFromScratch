@@ -5,18 +5,42 @@
 #include <iostream>
 
 int main(int argc, char** argv) {
-	_CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE );
-	_CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
-
 	//Console::writeln("Hello");
-	//Memory::Malloc(10000000000);
-
 	
-	List<int> ints = List<int>();
-	int t = 0;
+	ArrayList<int> test = ArrayList<int>();
+	test.Push(1);
+	test.Push(2);
+	test.Push(3);
+	for (auto it = test.Begin(); it != test.End(); it = test.Next()) {
+		for (auto it = test.Begin(); it != test.End(); it = test.Next()) {
+			std::cout << *it << std::endl;
+		}
+	}
+
+	/*foreach(item, test)
+	{
+		foreach(item2, test)
+		{
+			std::cout << *item2 << std::endl;
+		}
+	}*/
+
+	while(true) {}
+	/*ArrayList<int> ints = ArrayList<int>();
+	ints.Push(1);
+	ints.Push(2);
+	ints.Push(3);
+	ints.Push(4);
+	
+	
+	foreach(item, ints)
+	{
+		//std::cout << *item << std::endl;
+	}
+	
 	while (true) {
 		ints.Push(0);
 		ints.Clear();
-	}
+	}*/
 	return 0;
 }

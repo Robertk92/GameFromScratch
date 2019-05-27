@@ -14,3 +14,7 @@
 // such as names of functions and macros.
 // For more information see https://go.microsoft.com/fwlink/?linkid=865984
 #define foreach(item, collection) auto itr = collection.GetHead(); auto item = *itr; for(size_t i = 0; i < collection.Size(); i++, itr++, item = *itr)
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define not_implemented() ensure(false && "Not implemented")

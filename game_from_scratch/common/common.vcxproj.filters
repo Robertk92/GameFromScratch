@@ -17,15 +17,6 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="common\collections\collection.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\collections\collections.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\collections\list.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="common\collections\string.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -44,6 +35,18 @@
     <ClInclude Include="common\windows\console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="common\collections\linkedlist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\collections\collections.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\collections\arraylist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\collections\collection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -55,5 +58,8 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
 </Project>

@@ -1,9 +1,12 @@
 #ifndef __STRING_GUARD__
 #define __STRING_GUARD__
-#include <common/system/system.h>
-#include <common/collections/collection.h>
 
-class COMMON String : public Collection<char> {
+#include <common/system/system.h>
+#include <common/collections/arraylist.h>
+
+class COMMON String : public ArrayList<char> {
+protected:
+	
 /*
 public:
 	String(char* items = nullptr, size_t capacity = 0) : Collection<char>(items, capacity) {

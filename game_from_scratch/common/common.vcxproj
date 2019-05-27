@@ -163,9 +163,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="common\collections\arraylist.h" />
     <ClInclude Include="common\collections\collection.h" />
     <ClInclude Include="common\collections\collections.h" />
-    <ClInclude Include="common\collections\list.h" />
+    <ClInclude Include="common\collections\linkedlist.h" />
     <ClInclude Include="common\collections\string.h" />
     <ClInclude Include="common\diagnostics\assertion.h" />
     <ClInclude Include="common\system\memory.h" />
@@ -184,6 +185,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

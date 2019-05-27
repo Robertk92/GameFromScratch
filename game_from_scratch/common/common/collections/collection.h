@@ -2,125 +2,15 @@
 #define __COLLECTION_GUARD__
 
 #include <common/system/object.h>
-#include <common/diagnostics/assertion.h>
-#include <common/system/memory.h>
-#include <common/system/system.h>
 
-#define foreach(iterator, collection) \
-	auto iterator = collection.GetHead(); \
-	for(size_t i = 0; i < collection.Size(); i++, iterator++) \
+#define foreach(item, collection) \
+	for (auto item = collection.Begin(); item != collection.End(); item = collection.Next()) \
 
 template<class T> class COMMON Collection : public Object {
 public:
-	Collection(size_t capacity = 0) {
-		Setup(nullptr, 0, capacity);
-	}
-
-	Collection(T* items, size_t count) {
-		Setup(items, count, count);
-	}
-
-	template<size_t N> Collection(T (&items)[N]) {
-		Setup(items, N, N);
-	}
-	
-	Collection(Collection<T>& collection, bool sameCapacity = false) {
-		Setup(collection._head, collection._size, sameCapacity ? collection._capacity : collection._size);
-	}
-
-	Collection(const Collection<T>& copy) {
-		Setup(copy._head, copy._size, copy._capacity);
-	}
-
-	virtual ~Collection() {
-		free(_head);
-	}
-
-	inline T* GetHead() { return _head; }
-	inline size_t Size() { return _size; }
-	inline size_t Capacity() { return _capacity; }
-	inline T& operator[] (uint32_t index) { return _head[index]; }
-
-protected:
-	void Push(T item) {
-		PushRange(&item, 1);
-	}
-
-	void PushRange(T* items, size_t count) {
-		if (_size >= _capacity) {
-			SetCapacity(_capacity + count);
-		}
-		_size += count;
-		for (size_t i = 0; i < count; i++) {
-			_head[_size - count + i] = items[i];
-		}
-	}
-
-	void Insert(T item, uint32_t index) {
-		ensure(index >= 0 && index < _size);
-		if (_size >= _capacity) {
-			SetCapacity(_capacity + 1);
-		}
-		_size++;
-		ensure_intmul_no_overflow((_size - index), sizeof(T));
-		memmove(_head + index + 1, _head + index, (_size - index) * sizeof(T));
-		_head[index] = item;
-	}
-
-	void RemoveAt(uint32_t index, bool shrink = false) {
-		ensure(index >= 0 && index < _size);
-		if (index != _size - 1) {	
-			ensure_intmul_no_overflow((_size - index), sizeof(T));
-			memmove(_head + index - 1, _head + index, (_size - index) * sizeof(T));
-		}
-		_size--;
-		if (shrink) {
-			SetCapacity(_size);
-		}
-	}
-
-	void SetCapacity(size_t capacity) {
-		ensure(capacity >= _size);
-		if (_capacity == capacity) {
-			return;
-		}
-		_capacity = capacity;
-		T* newPtr = nullptr;
-		if (_capacity > 0) {
-			ensure_intmul_no_overflow(_capacity, sizeof(T));
-			T* copy = (T*)Memory::Malloc(_capacity * sizeof(T));
-			memcpy(copy, _head, _size * sizeof(T));
-			newPtr = copy;
-		}
-		free(_head);
-		_head = newPtr;
-	}
-
-	void Clear(bool shrink = true) {
-		_size = 0;
-		if (shrink) {
-			SetCapacity(0);
-		}
-	}
-
-private:
-	void Setup(T* items, size_t itemCount, size_t capacity) {
-		_size = 0;
-		_head = nullptr;
-		if (items != nullptr) {
-			PushRange(items, itemCount);
-			if (capacity > itemCount) {
-				SetCapacity(capacity);
-			}
-		}
-		else {
-			SetCapacity(capacity);
-		}
-	}
-
-	T* _head;
-	size_t _capacity;
-	size_t _size;
+	virtual const T* Begin() = 0;
+	virtual const T* End() = 0;
+	virtual const T* Next() = 0;
 };
 
-#endif
+#endif // __COLLECTION_GUARD__
