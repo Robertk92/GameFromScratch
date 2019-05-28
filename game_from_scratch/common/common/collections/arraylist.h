@@ -22,11 +22,15 @@ public:
 		ReverseIterator(const T* head, const T* tail) : BaseReverseIterator(head, tail) { }
 	};
 
-	ArrayList(size_t capacity = 0) {
+	ArrayList() { 
+		setup(nullptr, 0, 0);
+	}
+
+	ArrayList(size_t capacity) {
 		setup(nullptr, 0, capacity);
 	}
 
-	ArrayList(T* items, size_t count) {
+	ArrayList(const T* items, size_t count) {
 		setup(items, count, count);
 	}
 
@@ -46,19 +50,19 @@ public:
 		free(_head);
 	}
 
-	Iterator begin() {
+	BaseIterator begin() {
 		return Iterator(_head, _head + _size);
 	}
 
-	Iterator reverse_begin() {
+	BaseIterator reverse_begin() {
 		return Iterator(_head - 1, _head + _size + 1);
 	}
 
-	ReverseIterator end() {
+	BaseReverseIterator end() {
 		return ReverseIterator(_head + _size, _head);
 	}
 
-	ReverseIterator reverse_end() {
+	BaseReverseIterator reverse_end() {
 		return ReverseIterator(_head + _size - 1, _head + 1);
 	}
 
@@ -78,7 +82,7 @@ public:
 		push_range(&item, 1);
 	}
 
-	void push_range(T* items, size_t count) {
+	void push_range(const T* items, size_t count) {
 		if (_size >= _capacity) {
 			set_capacity(_capacity + count);
 		}
@@ -135,10 +139,10 @@ public:
 		}
 	}
 
-	
-private:
-	void setup(T* items, size_t itemCount, size_t capacity) {
+protected:
+	void setup(const T* items, size_t itemCount, size_t capacity) {
 		_size = 0;
+		_capacity = 0;
 		_head = nullptr;
 		if (items != nullptr) {
 			push_range(items, itemCount);
