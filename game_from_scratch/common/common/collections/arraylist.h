@@ -7,98 +7,56 @@
 #include <common/system/system.h>
 
 template<class T> class COMMON ArrayList : public Collection<T> {
-	using BaseIter = Collection<T>::Iterator;
-
+	using BaseIterator = Collection<T>::Iterator;
+	using BaseReverseIterator = Collection<T>::ReverseIterator;
 public:
-	class COMMON ReverseIterator : public BaseIter {
+	class COMMON ReverseIterator : public BaseReverseIterator {
 	public:
-		ReverseIterator(const T* head, const T* tail) : BaseIter(head, tail) {
-			BaseIter::_current = head;
+		ReverseIterator(const Collection<T>& collection) : BaseReverseIterator(collection) {
+			this->_head = collection.head();
+			this->_tail = collection.tail();
+		}
+
+		ReverseIterator(const T* head, const T* tail) : BaseReverseIterator(head, tail) {
 			_beginReached = false;
 		}
 
+	protected:
 		const T* next() override {
 			ENSURE(!_beginReached && "Attempting to iterate backwards past the beginning of the collection");
-			if (BaseIter::_current - 1 == BaseIter::_head) {
+			if (BaseReverseIterator::_current - 1 == BaseReverseIterator::_head) {
 				_beginReached = true;
 			}
-			return --BaseIter::_current;
-		}
-
-		inline void operator--() {
-			next();
-		}
-
-		inline void operator-=(int decrement) {
-			for (size_t i = 0; i < decrement; i++) {
-				next();
-			}
-		}
-
-		inline ReverseIterator& operator--(int decrement) {
-			for (size_t i = 0; i < decrement; i++) {
-				next();
-			}
-			return *this;
-		}
-
-		inline ReverseIterator operator-(int decrement) {
-			return ReverseIterator(BaseIter::_head - decrement, BaseIter::_tail);
-		}
-
-		inline ReverseIterator operator+(int increment) {
-			return ReverseIterator(BaseIter::_head + increment, BaseIter::_tail);
+			return --BaseReverseIterator::_current;
 		}
 
 	private:
 		bool _beginReached;
 	};
 
-	class COMMON Iterator : public BaseIter {
+	class COMMON Iterator : public BaseIterator {
 	public:
-		Iterator(const T* head, const T* tail) : BaseIter(head, tail) {
-			BaseIter::_current = head;
+		Iterator(const Collection<T>& collection) : BaseIterator(collection) {
+			this->_head = collection.head();
+			this->_tail = collection.tail();
+		}
+
+		Iterator(const T* head, const T* tail) : BaseIterator(head, tail) {
 			_endReached = false;
 		}
 
+	protected:
 		const T* next() override {
 			ENSURE(!_endReached && "Attempting to iterate past the end of the collection");
-			if (BaseIter::_current + 1 == BaseIter::_tail) {
+			if (BaseIterator::_current + 1 == BaseIterator::_tail) {
 				_endReached = true;
 			}
-			return ++BaseIter::_current;
-		}
-
-		inline Iterator operator-(int decrement) {
-			return Iterator(BaseIter::_head - decrement, BaseIter::_tail);
-		}
-
-		inline Iterator operator+(int increment) {
-			return Iterator(BaseIter::_head + increment, BaseIter::_tail);
-		}
-
-		inline void operator++() {
-			next();
-		}
-
-		inline void operator+=(int increment) {
-			for (size_t i = 0; i < increment; i++) {
-				next();
-			}
-		}
-
-		inline Iterator& operator++(int increment) {
-			for (size_t i = 0; i < increment; i++) {
-				next();
-			}
-			return *this;
+			return ++BaseIterator::_current;
 		}
 	private:
 		bool _endReached;
 	};
 
-	friend class ArrayList<T>::Iterator;
-	
 	ArrayList(size_t capacity = 0) {
 		setup(nullptr, 0, capacity);
 	}
@@ -142,6 +100,14 @@ public:
 	inline size_t size() { return _size; }
 	inline size_t capacity() { return _capacity; }
 	inline T& operator[] (uint32_t index) { return _head[index]; }
+
+	const T* head() const override {
+		return _head;
+	}
+
+	const T* tail() const override {
+		return _head + _size;
+	}
 
 	void push(T item) {
 		push_range(&item, 1);

@@ -52,15 +52,16 @@ int main(int argc, char** argv) {
 	}
 
 	for (size_t i = 0; i < test.size(); i++) {
-		std::cout << "itforloop: " << test[i].hallo << std::endl;
+		std::cout << "itforloop: " << test[0].hallo << std::endl;
 	}
 
 	FOREACH(it, test) {
 		std::cout << "it1 forward  : " << it->hallo << std::endl;
 		REVERSE_FOREACH(it2, test) {
-			std::cout << "it2 reverse: " << it2->hallo << std::endl;
+			std::cout << "it2 reverse: " << it->hallo << std::endl;
 		}
 	}
+
 
 	/*for (auto it = test.begin(); it != test.end(); ++it) {
 		std::cout << it->hallo << std::endl;
