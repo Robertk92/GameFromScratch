@@ -54,10 +54,12 @@ public:
 		Iterator(const Collection<T>& collection) : CollectionBaseIterator(collection) {
 			this->_head = collection.head();
 			this->_tail = collection.tail();
+			_endReached = false;
 		}
 
 		Iterator(const T* head, const T* tail) : CollectionBaseIterator(head, tail) {
 			CollectionBaseIterator::_current = head;
+			_endReached = false;
 		}
 
 		inline Iterator operator-(int decrement) {
@@ -68,25 +70,34 @@ public:
 			return Iterator(CollectionBaseIterator::_head + increment, CollectionBaseIterator::_tail);
 		}
 
-		inline void operator++() {
-			next();
-		}
-
 		inline void operator+=(int increment) {
 			for (size_t i = 0; i < increment; i++) {
 				next();
 			}
 		}
 
-		inline Iterator& operator++(int increment) {
-			for (size_t i = 0; i < increment; i++) {
-				next();
-			}
+		inline Iterator& operator++() {
+			next();
 			return *this;
 		}
 
+		inline Iterator operator++(int) {
+			Iterator result(*this);
+			++(*this);
+			return result;
+		}
+
 	protected:
-		const T* next() = 0;
+		virtual const T* next() override {
+			ENSURE(!_endReached && "Attempting to iterate past the end of the collection");
+			if (CollectionBaseIterator::_current + 1 == CollectionBaseIterator::_tail) {
+				_endReached = true;
+			}
+			return ++CollectionBaseIterator::_current;
+		}
+
+	private:
+		bool _endReached;
 	};
 
 	class COMMON ReverseIterator : public CollectionBaseIterator {
@@ -94,10 +105,12 @@ public:
 		ReverseIterator(const Collection<T>& collection) : CollectionBaseIterator(collection) {
 			this->_head = collection.head();
 			this->_tail = collection.tail();
+			_beginReached = false;
 		}
 
 		ReverseIterator(const T* head, const T* tail) : CollectionBaseIterator(head, tail) {
 			CollectionBaseIterator::_current = head;
+			_beginReached = false;
 		}
 
 		inline void operator--() {
@@ -126,7 +139,16 @@ public:
 		}
 
 	protected:
-		const T* next() = 0;
+		const T* next() override {
+			ENSURE(!_beginReached && "Attempting to iterate backwards past the beginning of the collection");
+			if (CollectionBaseIterator::_current - 1 == CollectionBaseIterator::_head) {
+				_beginReached = true;
+			}
+			return --CollectionBaseIterator::_current;
+		}
+
+	private:
+		bool _beginReached;
 	};
 
 public:

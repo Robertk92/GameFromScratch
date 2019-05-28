@@ -10,51 +10,16 @@ template<class T> class COMMON ArrayList : public Collection<T> {
 	using BaseIterator = Collection<T>::Iterator;
 	using BaseReverseIterator = Collection<T>::ReverseIterator;
 public:
-	class COMMON ReverseIterator : public BaseReverseIterator {
-	public:
-		ReverseIterator(const Collection<T>& collection) : BaseReverseIterator(collection) {
-			this->_head = collection.head();
-			this->_tail = collection.tail();
-		}
-
-		ReverseIterator(const T* head, const T* tail) : BaseReverseIterator(head, tail) {
-			_beginReached = false;
-		}
-
-	protected:
-		const T* next() override {
-			ENSURE(!_beginReached && "Attempting to iterate backwards past the beginning of the collection");
-			if (BaseReverseIterator::_current - 1 == BaseReverseIterator::_head) {
-				_beginReached = true;
-			}
-			return --BaseReverseIterator::_current;
-		}
-
-	private:
-		bool _beginReached;
-	};
-
 	class COMMON Iterator : public BaseIterator {
 	public:
-		Iterator(const Collection<T>& collection) : BaseIterator(collection) {
-			this->_head = collection.head();
-			this->_tail = collection.tail();
-		}
+		Iterator(const Collection<T>& collection) : BaseIterator(collection) { }
+		Iterator(const T* head, const T* tail) : BaseIterator(head, tail) { }
+	};
 
-		Iterator(const T* head, const T* tail) : BaseIterator(head, tail) {
-			_endReached = false;
-		}
-
-	protected:
-		const T* next() override {
-			ENSURE(!_endReached && "Attempting to iterate past the end of the collection");
-			if (BaseIterator::_current + 1 == BaseIterator::_tail) {
-				_endReached = true;
-			}
-			return ++BaseIterator::_current;
-		}
-	private:
-		bool _endReached;
+	class COMMON ReverseIterator : public BaseReverseIterator {
+	public:
+		ReverseIterator(const Collection<T>& collection) : BaseReverseIterator(collection) { }
+		ReverseIterator(const T* head, const T* tail) : BaseReverseIterator(head, tail) { }
 	};
 
 	ArrayList(size_t capacity = 0) {
