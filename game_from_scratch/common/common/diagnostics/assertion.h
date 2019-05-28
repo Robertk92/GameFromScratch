@@ -3,10 +3,10 @@
 #include <assert.h>
 #include <limits.h>
 
-#define ensure(condition) assert(condition)
-#define ensure_intmul_no_overflow(a, b) ensure(a <= INT_MAX / b && "Mul operation overflow");
+#define ENSURE(condition) assert(condition)
+#define ENSURE_INTMUL_NO_OVERFLOW(a, b) ENSURE(a <= INT_MAX / b && "Mul operation overflow");
 
-#define not_implemented() ensure(false && "Not implemented")
+#define NOT_IMPLEMENTED() ENSURE(false && "Not implemented")
 									
 
 

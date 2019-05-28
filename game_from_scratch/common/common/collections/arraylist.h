@@ -7,54 +7,149 @@
 #include <common/system/system.h>
 
 template<class T> class COMMON ArrayList : public Collection<T> {
+	using BaseIter = Collection<T>::Iterator;
+
 public:
+	class COMMON ReverseIterator : public BaseIter {
+	public:
+		ReverseIterator(const T* head, const T* tail) : BaseIter(head, tail) {
+			BaseIter::_current = head;
+			_beginReached = false;
+		}
+
+		const T* next() override {
+			ENSURE(!_beginReached && "Attempting to iterate backwards past the beginning of the collection");
+			if (BaseIter::_current - 1 == BaseIter::_head) {
+				_beginReached = true;
+			}
+			return --BaseIter::_current;
+		}
+
+		inline void operator--() {
+			next();
+		}
+
+		inline void operator-=(int decrement) {
+			for (size_t i = 0; i < decrement; i++) {
+				next();
+			}
+		}
+
+		inline ReverseIterator& operator--(int decrement) {
+			for (size_t i = 0; i < decrement; i++) {
+				next();
+			}
+			return *this;
+		}
+
+		inline ReverseIterator operator-(int decrement) {
+			return ReverseIterator(BaseIter::_head - decrement, BaseIter::_tail);
+		}
+
+		inline ReverseIterator operator+(int increment) {
+			return ReverseIterator(BaseIter::_head + increment, BaseIter::_tail);
+		}
+
+	private:
+		bool _beginReached;
+	};
+
+	class COMMON Iterator : public BaseIter {
+	public:
+		Iterator(const T* head, const T* tail) : BaseIter(head, tail) {
+			BaseIter::_current = head;
+			_endReached = false;
+		}
+
+		const T* next() override {
+			ENSURE(!_endReached && "Attempting to iterate past the end of the collection");
+			if (BaseIter::_current + 1 == BaseIter::_tail) {
+				_endReached = true;
+			}
+			return ++BaseIter::_current;
+		}
+
+		inline Iterator operator-(int decrement) {
+			return Iterator(BaseIter::_head - decrement, BaseIter::_tail);
+		}
+
+		inline Iterator operator+(int increment) {
+			return Iterator(BaseIter::_head + increment, BaseIter::_tail);
+		}
+
+		inline void operator++() {
+			next();
+		}
+
+		inline void operator+=(int increment) {
+			for (size_t i = 0; i < increment; i++) {
+				next();
+			}
+		}
+
+		inline Iterator& operator++(int increment) {
+			for (size_t i = 0; i < increment; i++) {
+				next();
+			}
+			return *this;
+		}
+	private:
+		bool _endReached;
+	};
+
+	friend class ArrayList<T>::Iterator;
+	
 	ArrayList(size_t capacity = 0) {
-		Setup(nullptr, 0, capacity);
+		setup(nullptr, 0, capacity);
 	}
 
 	ArrayList(T* items, size_t count) {
-		Setup(items, count, count);
+		setup(items, count, count);
 	}
 
 	template<size_t N> ArrayList(T (&items)[N]) {
-		Setup(items, N, N);
+		setup(items, N, N);
 	}
 	
 	ArrayList(ArrayList<T>& collection, bool sameCapacity = false) {
-		Setup(collection._head, collection._size, sameCapacity ? collection._capacity : collection._size);
+		setup(collection._head, collection._size, sameCapacity ? collection._capacity : collection._size);
 	}
 
 	ArrayList(const ArrayList<T>& copy) {
-		Setup(copy._head, copy._size, copy._capacity);
+		setup(copy._head, copy._size, copy._capacity);
 	}
 
 	virtual ~ArrayList() {
 		free(_head);
 	}
 
-	const T* Begin() override {
-		return _head;
+	Iterator begin() {
+		return Iterator(_head, _head + _size);
 	}
 
-	const T* End() override {
-		return _head + _size;
+	Iterator reverse_begin() {
+		return Iterator(_head - 1, _head + _size + 1);
 	}
 
-	const T* Next() override {
-		return ++_iterator;
+	ReverseIterator end() {
+		return ReverseIterator(_head + _size, _head);
 	}
 
-	inline size_t Size() { return _size; }
-	inline size_t Capacity() { return _capacity; }
+	ReverseIterator reverse_end() {
+		return ReverseIterator(_head + _size - 1, _head + 1);
+	}
+
+	inline size_t size() { return _size; }
+	inline size_t capacity() { return _capacity; }
 	inline T& operator[] (uint32_t index) { return _head[index]; }
 
-	void Push(T item) {
-		PushRange(&item, 1);
+	void push(T item) {
+		push_range(&item, 1);
 	}
 
-	void PushRange(T* items, size_t count) {
+	void push_range(T* items, size_t count) {
 		if (_size >= _capacity) {
-			SetCapacity(_capacity + count);
+			set_capacity(_capacity + count);
 		}
 		_size += count;
 		for (size_t i = 0; i < count; i++) {
@@ -62,39 +157,39 @@ public:
 		}
 	}
 
-	void Insert(T item, uint32_t index) {
-		ensure(index >= 0 && index < _size);
+	void insert(T item, uint32_t index) {
+		ENSURE(index >= 0 && index < _size);
 		if (_size >= _capacity) {
-			SetCapacity(_capacity + 1);
+			set_capacity(_capacity + 1);
 		}
 		_size++;
-		ensure_intmul_no_overflow((_size - index), sizeof(T));
+		ENSURE_INTMUL_NO_OVERFLOW((_size - index), sizeof(T));
 		memmove(_head + index + 1, _head + index, (_size - index) * sizeof(T));
 		_head[index] = item;
 	}
 
-	void RemoveAt(uint32_t index, bool shrink = false) {
-		ensure(index >= 0 && index < _size);
+	void remove_at(uint32_t index, bool shrink = false) {
+		ENSURE(index >= 0 && index < _size);
 		if (index != _size - 1) {	
-			ensure_intmul_no_overflow((_size - index), sizeof(T));
+			ENSURE_INTMUL_NO_OVERFLOW((_size - index), sizeof(T));
 			memmove(_head + index - 1, _head + index, (_size - index) * sizeof(T));
 		}
 		_size--;
 		if (shrink) {
-			SetCapacity(_size);
+			set_capacity(_size);
 		}
 	}
 
-	void SetCapacity(size_t capacity) {
-		ensure(capacity >= _size);
+	void set_capacity(size_t capacity) {
+		ENSURE(capacity >= _size);
 		if (_capacity == capacity) {
 			return;
 		}
 		_capacity = capacity;
 		T* newPtr = nullptr;
 		if (_capacity > 0) {
-			ensure_intmul_no_overflow(_capacity, sizeof(T));
-			T* copy = (T*)Memory::Malloc(_capacity * sizeof(T));
+			ENSURE_INTMUL_NO_OVERFLOW(_capacity, sizeof(T));
+			T* copy = (T*)Memory::alloc(_capacity * sizeof(T));
 			memcpy(copy, _head, _size * sizeof(T));
 			newPtr = copy;
 		}
@@ -102,31 +197,30 @@ public:
 		_head = newPtr;
 	}
 
-	void Clear(bool shrink = true) {
+	void clear(bool shrink = true) {
 		_size = 0;
 		if (shrink) {
-			SetCapacity(0);
+			set_capacity(0);
 		}
 	}
 
 	
 private:
-	void Setup(T* items, size_t itemCount, size_t capacity) {
+	void setup(T* items, size_t itemCount, size_t capacity) {
 		_size = 0;
 		_head = nullptr;
 		if (items != nullptr) {
-			PushRange(items, itemCount);
+			push_range(items, itemCount);
 			if (capacity > itemCount) {
-				SetCapacity(capacity);
+				set_capacity(capacity);
 			}
 		}
 		else {
-			SetCapacity(capacity);
+			set_capacity(capacity);
 		}
 	}
 
 	T* _head;
-	T* _iterator;
 	size_t _size;
 	size_t _capacity;
 };

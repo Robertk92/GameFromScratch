@@ -7,7 +7,7 @@
 
 class COMMON Console {
 public:
-	/*static void Writeln(String str) {
+	/*static void write_line(String str) {
 		//std::cout << str << std::endl;
 	}*/
 private:

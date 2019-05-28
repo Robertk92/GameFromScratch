@@ -6,9 +6,9 @@
 
 class COMMON Memory {
 public:
-	static void* Malloc(size_t sizeInBytes) {
+	static void* alloc(size_t sizeInBytes) {
 		void* allocAdr = malloc(sizeInBytes);
-		ensure(allocAdr != nullptr && "Memory allocation failed");
+		ENSURE(allocAdr != nullptr && "Memory allocation failed");
 		return allocAdr;
 	}
 };
