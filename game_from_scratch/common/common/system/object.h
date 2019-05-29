@@ -3,10 +3,12 @@
 
 #include <common/system/system.h>
 
-class COMMON Object {
-public:
-	virtual ~Object() = 0;
-};
-Object::~Object() { } 
+namespace Common {
+	class COMMON Object {
+	public:
+		virtual ~Object() = 0;
+	};
+	Object::~Object() { }
+}
 
 #endif //__OBJECT_GUARD__

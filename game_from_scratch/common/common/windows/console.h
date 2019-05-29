@@ -4,13 +4,15 @@
 //#include <common/collections/string.h>
 #include <common/system/system.h>
 
-class COMMON Console {
-public:
-	/*static void write_line(String str) {
-		//std::cout << str << std::endl;
-	}*/
-private:
+namespace Common {
+	class COMMON Console {
+	public:
+		/*static void write_line(String str) {
+			//std::cout << str << std::endl;
+		}*/
+	private:
 
-};
+	};
+}
 
 #endif

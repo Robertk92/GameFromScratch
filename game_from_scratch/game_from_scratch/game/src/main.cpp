@@ -1,5 +1,4 @@
 
-
 #include <common/windows/console.h>
 #include <common/system/system.h>
 
@@ -9,14 +8,20 @@
 #include <iostream>
 #include <vector>
 
+using namespace Common;
+
 int main(int argc, char** argv) {
 	String myString = " van ";
-	String hallo = ("Hoedje" + myString + "papier.");
-	
+
+	String str = "abcdefghijklmnopqrstuvwxyzjemoeder";
+	reverse_foreach_skip(chr, str, 1) {
+		std::cout << *chr;
+	}
 	
 	std::string vanStd = " van ";
+
 	
-	std::cout << hallo.c_str() << std::endl;
+//	std::cout << hallo.c_str() << std::endl;
 	while(true) {
 		//std::string tt = "Hoedje" + vanStd + "papier";
 		ArrayList<String> strings = ArrayList<String>();
@@ -24,6 +29,7 @@ int main(int argc, char** argv) {
 		{
 			String s = "Hoedje" + myString + "papier";
 			s += " en van karton";
+			
 			strings.push(s);
 		}
 		strings.clear();

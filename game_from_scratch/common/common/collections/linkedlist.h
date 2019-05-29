@@ -4,13 +4,15 @@
 #include <common/collections/collection.h>
 #include <common/system/system.h>
 
-template<class T> class COMMON LinkedList : public Collection<T> {
-public:
-	
-	virtual ~LinkedList() {
-		
-	}
+namespace Common {
+	template<class T> class COMMON LinkedList : public Collection<T> {
+	public:
 
-};
+		virtual ~LinkedList() {
+
+		}
+
+	};
+}
 
 #endif
