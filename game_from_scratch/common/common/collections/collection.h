@@ -1,7 +1,9 @@
 #ifndef __COLLECTION_GUARD__
 #define __COLLECTION_GUARD__
 
+#include <common/system/system.h>
 #include <common/system/object.h>
+#include <common/diagnostics/assertion.h>
 
 #define REVERSE_FOREACH(it, collection) for(auto it = collection.reverse_end(); it != collection.reverse_begin(); --it) 
 #define FOREACH(it, collection) for(auto it = collection.begin(); it != collection.end(); ++it)
@@ -12,12 +14,14 @@ public:
 	public:
 		CollectionBaseIterator(const Collection<T>& collection) {
 			this->_head = collection.head();
-			this->_tail = collection.tail();
+			this->_tail = collection.head() + collection.size();
+			this->_current = this->_head;
 		}
 
 		CollectionBaseIterator(const T* head, const T* tail) {
 			this->_head = head;
 			this->_tail = tail;
+			this->_current = head;
 		}
 
 		inline const T& operator*() const {
@@ -52,13 +56,10 @@ public:
 	class COMMON Iterator : public CollectionBaseIterator {
 	public:
 		Iterator(const Collection<T>& collection) : CollectionBaseIterator(collection) {
-			this->_head = collection.head();
-			this->_tail = collection.tail();
 			_endReached = false;
 		}
 
 		Iterator(const T* head, const T* tail) : CollectionBaseIterator(head, tail) {
-			CollectionBaseIterator::_current = head;
 			_endReached = false;
 		}
 
@@ -103,13 +104,10 @@ public:
 	class COMMON ReverseIterator : public CollectionBaseIterator {
 	public:
 		ReverseIterator(const Collection<T>& collection) : CollectionBaseIterator(collection) {
-			this->_head = collection.head();
-			this->_tail = collection.tail();
 			_beginReached = false;
 		}
 
 		ReverseIterator(const T* head, const T* tail) : CollectionBaseIterator(head, tail) {
-			CollectionBaseIterator::_current = head;
 			_beginReached = false;
 		}
 
@@ -151,9 +149,11 @@ public:
 		bool _beginReached;
 	};
 
+
 public:
+	virtual ~Collection<T>() { }
+	virtual size_t size() const = 0;
 	virtual const T* head() const = 0;
-	virtual const T* tail() const = 0;
 };
 
 #endif // __COLLECTION_GUARD__

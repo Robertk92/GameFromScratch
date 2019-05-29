@@ -1,10 +1,11 @@
 #ifndef __ARRAYLIST_GUARD__
 #define __ARRAYLIST_GUARD__
 
-#include <common/diagnostics/assertion.h>
-#include <common/collections/collection.h>
-#include <common/system/memory.h>
 #include <common/system/system.h>
+#include <common/system/memory.h>
+#include <common/collections/collection.h>
+#include <common/diagnostics/assertion.h>
+#include <common/collections/string.h>
 
 template<class T> class COMMON ArrayList : public Collection<T> {
 	using BaseIterator = Collection<T>::Iterator;
@@ -46,7 +47,7 @@ public:
 		setup(copy._head, copy._size, copy._capacity);
 	}
 
-	virtual ~ArrayList() {
+	virtual ~ArrayList() { 
 		free(_head);
 	}
 
@@ -74,8 +75,8 @@ public:
 		return _head;
 	}
 
-	const T* tail() const override {
-		return _head + _size;
+	size_t size() const override {
+		return _size;
 	}
 
 	void push(T item) {
@@ -98,7 +99,7 @@ public:
 			set_capacity(_capacity + 1);
 		}
 		_size++;
-		ENSURE_INTMUL_NO_OVERFLOW((_size - index), sizeof(T));
+		ENSURE_UINTMUL_NO_OVERFLOW((_size - index), sizeof(T));
 		memmove(_head + index + 1, _head + index, (_size - index) * sizeof(T));
 		_head[index] = item;
 	}
@@ -106,7 +107,7 @@ public:
 	void remove_at(uint32_t index, bool shrink = false) {
 		ENSURE(index >= 0 && index < _size);
 		if (index != _size - 1) {	
-			ENSURE_INTMUL_NO_OVERFLOW((_size - index), sizeof(T));
+			ENSURE_UINTMUL_NO_OVERFLOW((_size - index), sizeof(T));
 			memmove(_head + index - 1, _head + index, (_size - index) * sizeof(T));
 		}
 		_size--;
@@ -123,7 +124,7 @@ public:
 		_capacity = capacity;
 		T* newPtr = nullptr;
 		if (_capacity > 0) {
-			ENSURE_INTMUL_NO_OVERFLOW(_capacity, sizeof(T));
+			ENSURE_UINTMUL_NO_OVERFLOW(_capacity, sizeof(T));
 			T* copy = (T*)Memory::alloc(_capacity * sizeof(T));
 			memcpy(copy, _head, _size * sizeof(T));
 			newPtr = copy;
@@ -155,9 +156,9 @@ protected:
 		}
 	}
 
-	T* _head;
 	size_t _size;
 	size_t _capacity;
+	T* _head;
 };
 
 #endif // __ARRAYLIST_GUARD__

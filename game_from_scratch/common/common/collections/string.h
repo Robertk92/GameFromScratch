@@ -2,10 +2,14 @@
 #define __STRING_GUARD__
 
 #include <common/system/system.h>
-#include <common/collections/arraylist.h>
+#include <common/system/memory.h>
+#include <common/collections/collection.h>
+#include <common/diagnostics/assertion.h>
 #include <string.h> // C header 
 
-class COMMON String : public ArrayList<char> {
+#define EMPTY_C_STR "\0"
+
+class COMMON String : public Collection<char> {
 	using BaseIterator = Collection<char>::Iterator;
 	using BaseReverseIterator = Collection<char>::ReverseIterator;
 public:
@@ -21,32 +25,27 @@ public:
 		ReverseIterator(const char* head, const char* tail) : BaseReverseIterator(head, tail) { }
 	};
 
-	String() : ArrayList<char>() { 
-		setup();
+	String() { 
+		setup(EMPTY_C_STR);
 	}
 
-	String(size_t capacity) : ArrayList<char>(capacity) { 
-		setup();
+	String(const char* chars, size_t capacity = 0) {
+		setup(chars);
 	}
 
-	String(const char* chars, size_t capacity = 0) : ArrayList<char>(chars, strlen(chars)) { 
-		setup();
+	template<size_t N> String(char(&items)[N]) {
+		setup(items);
 	}
 
-	template<size_t N> String(char(&items)[N]) : ArrayList<char>(items) {  
-		setup();
+	String(const String& other) {
+		setup(other._head);
 	}
 
-	String(const String& other) : ArrayList<char>(other.c_str(), strlen(other.c_str())) {
-		setup();
-	}
-
-	static const String& empty() {
-		return _emptyStr;
+	virtual ~String() {
+		free(_head);
 	}
 
 	BaseIterator begin() {
-		
 		return Iterator(_head, _head + _size);
 	}
 
@@ -62,78 +61,109 @@ public:
 		return ReverseIterator(_head + _size - 1, _head + 1);
 	}
 
-	inline String operator=(const String& rhs) {
-		return String(rhs);
+	size_t size() const override {
+		return _size;
 	}
 
-	inline String& operator=(const char* chars) {
-		clear();
-		push_range(chars, strlen(chars));
+	const char* head() const override {
+		return _head;
+	}
+
+	String& append(const String& str) {
+		append(str.c_str());
 		return *this;
 	}
 
-	inline String& operator+=(const char* chars) {
-		push_range(chars, strlen(chars));
+	String& append(const char* chars) {
+		add_chars(chars, true);
 		return *this;
 	}
 
-	inline String& operator+(const char* chars) {
-		push_range(chars, strlen(chars));
+	String& prepend(const String& str) {
+		prepend(str.c_str());
 		return *this;
 	}
 
-	inline friend String operator+(const char* lhs, String& rhs) {
-		size_t lhsSize = strlen(lhs);
-		size_t totalSize = lhsSize + rhs.size();
-		char* concat = (char*)Memory::alloc(totalSize + 2);
-		strncpy_s(concat, lhsSize + 1, lhs, _TRUNCATE);
-		strncpy_s(concat + lhsSize, rhs.size() + 1, rhs.c_str(), _TRUNCATE);
-		return String(concat);
+	String& prepend(const char* chars) {
+		add_chars(chars, false);
+		return *this;
 	}
 
-	void append(String str) {
-		BROKEN("Doesnt break using it but leaves the arraylist in a broken state where size is too large next time push_items is called"); {
-			size_t len = size() + str.size();
-			char* concatted = (char*)Memory::alloc(len + 2);
-			strncpy_s(concatted, size() + 1, c_str(), _TRUNCATE);
-			strncpy_s(concatted + size(), str.size() + 1, str.c_str(), _TRUNCATE);
-			clear(false);
-			push_range(concatted, strlen(concatted));
-		}
+	static String empty() {
+		return String(EMPTY_C_STR);
 	}
 
 	const char* c_str() const {
 		if (_head == nullptr) {
-			return _emptyCStr;
+			return EMPTY_C_STR;
 		}
+		return _head;
+	}
 
-		if (_cStr != nullptr) {
-			free(_cStr);
-		}
-		_cStr = (char*)Memory::alloc(_size + 1);
-		strncpy_s(_cStr, _size + 1, _head, _TRUNCATE);
-		return _cStr;
+	inline String operator=(const String& rhs) {
+		return String(rhs);
+	}
+
+	/*inline String& operator=(const char* chars) {
+		set(chars);
+		return *this;
+	}*/
+
+	inline String& operator+=(const String& str) {
+		return append(str);
+	}
+
+	inline String& operator+(const char* str) {
+		return append(str);
+	}
+
+	inline friend String operator+(String& lhs, String& rhs) {
+		String combined = lhs;
+		combined.append(rhs);
+		return combined;
+	}
+
+	inline friend String operator+(const char* lhs, String& rhs) {
+		String str = String(lhs);
+		str.append(rhs);
+		return str;
 	}
 
 private:
-	void setup() {
-		if (_emptyCStr == nullptr) {
-			_emptyCStr = (char*)Memory::alloc(sizeof(char));
-			memset(_emptyCStr, 0, sizeof(char));
-			_emptyStr = String(_emptyCStr);
-		}
-		_prevCStrSize = 0;
-		_cStr = nullptr;
+	void setup(const char* data) {
+		_head = nullptr;
+		_size = 0;
+		set_chars(data);
 	}
 
-	size_t _prevCStrSize;
-	mutable char* _cStr;
+	void set_chars(const char* chars) {
+		if (_head != nullptr) {
+			free(_head);
+		}
+		_size = strlen(chars);
+		_head = (char*)Memory::alloc(_size * sizeof(char) + 1);
+		strncpy_s(_head, _size + 1, chars, _TRUNCATE);
+	}
 
-	static String _emptyStr;
-	static char* _emptyCStr;
+	void add_chars(const char* chars, bool append) {
+		size_t lhsSize = strlen(chars);
+		size_t combinedSize = lhsSize + size();
+		char* combined = (char*)Memory::alloc(combinedSize + 2);
+		if (append) {
+			strncpy_s(combined, size() + 1, c_str(), _TRUNCATE);
+			strncpy_s(combined + size(), lhsSize + 1, chars, _TRUNCATE);
+		}
+		else {
+			strncpy_s(combined, lhsSize + 1, chars, _TRUNCATE);
+			strncpy_s(combined + lhsSize, size() + 1, c_str(), _TRUNCATE);
+		}
+		set_chars(combined);
+		free(combined);
+	}
+
+private:
+	size_t _size;
+	char* _head;
 };
 
-String String::_emptyStr;
-char* String::_emptyCStr;
-
-#endif
+#endif //__STRING_GUARD__
