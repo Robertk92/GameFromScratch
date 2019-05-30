@@ -11,28 +11,13 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="common\collections\string.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\diagnostics\assertion.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\system\memory.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="common\system\object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="common\system\system.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="common\windows\console.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="common\collections\linkedlist.h">
@@ -47,15 +32,45 @@
     <ClInclude Include="common\collections\collection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="common\system\memory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\diagnostics\assertion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\platform\platform_dialogue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\platform\windows\platform_windows.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\system\convert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="common.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="dllmain.cpp">
+    <ClCompile Include="src\system\system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\memory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\windows\platform_windows.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\platform_dialogue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\diagnostics\assertion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\convert.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

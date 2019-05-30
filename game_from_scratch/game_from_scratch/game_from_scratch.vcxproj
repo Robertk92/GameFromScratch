@@ -80,12 +80,12 @@
     <IncludePath>$(SolutionDir)common;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)bin</OutDir>
+    <OutDir>$(SolutionDir)bin\</OutDir>
     <LibraryPath>D:\git\GameFromScratch\game_from_scratch\bin;$(LibraryPath)</LibraryPath>
     <IncludePath>$(SolutionDir)common;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)bin</OutDir>
+    <OutDir>$(SolutionDir)bin\</OutDir>
     <LibraryPath>D:\git\GameFromScratch\game_from_scratch\bin;$(LibraryPath)</LibraryPath>
     <IncludePath>$(SolutionDir)common;$(IncludePath)</IncludePath>
   </PropertyGroup>

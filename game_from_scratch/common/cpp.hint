@@ -4,3 +4,4 @@
 #define COMMON __declspec(dllexport)
 #define COMMON __declspec(dllexport)
 #define COMMON __declspec(dllexport)
+#define ensure(condition) assert(condition)

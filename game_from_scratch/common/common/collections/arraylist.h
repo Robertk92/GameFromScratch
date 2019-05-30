@@ -2,9 +2,8 @@
 #define __ARRAYLIST_GUARD__
 
 #include <common/system/system.h>
-#include <common/system/memory.h>
 #include <common/collections/collection.h>
-#include <common/diagnostics/assertion.h>
+#include <common/system/memory.h>
 #include <common/collections/string.h>
 
 namespace Common {
@@ -28,15 +27,15 @@ namespace Common {
 			setup(nullptr, 0, 0);
 		}
 
-		ArrayList(size_t capacity) {
+		ArrayList(Size capacity) {
 			setup(nullptr, 0, capacity);
 		}
 
-		ArrayList(const T* items, size_t count) {
+		ArrayList(const T* items, Size count) {
 			setup(items, count, count);
 		}
 
-		template<size_t N> ArrayList(T(&items)[N]) {
+		template<Size N> ArrayList(T(&items)[N]) {
 			setup(items, N, N);
 		}
 
@@ -49,7 +48,9 @@ namespace Common {
 		}
 
 		virtual ~ArrayList() {
-			free(_head);
+			if (_head != nullptr) {
+				Memory::release(_head);
+			}
 		}
 
 		BaseIterator begin() {
@@ -68,15 +69,15 @@ namespace Common {
 			return ReverseIterator(_head + _size - 1, _head + 1);
 		}
 
-		inline size_t size() { return _size; }
-		inline size_t capacity() { return _capacity; }
-		inline T& operator[] (uint32_t index) { return _head[index]; }
+		inline Size size() { return _size; }
+		inline Size capacity() { return _capacity; }
+		inline T& operator[] (UInt32 index) { return _head[index]; }
 
 		const T* head() const override {
 			return _head;
 		}
 
-		size_t size() const override {
+		Size size() const override {
 			return _size;
 		}
 
@@ -84,32 +85,32 @@ namespace Common {
 			push_range(&item, 1);
 		}
 
-		void push_range(const T* items, size_t count) {
+		void push_range(const T* items, Size count) {
 			if (_size >= _capacity) {
 				set_capacity(_capacity + count);
 			}
 			_size += count;
-			for (size_t i = 0; i < count; i++) {
+			for (Size i = 0; i < count; i++) {
 				_head[_size - count + i] = items[i];
 			}
 		}
 
-		void insert(T item, uint32_t index) {
+		void insert(T item, UInt32 index) {
 			ensure(index >= 0 && index < _size);
 			if (_size >= _capacity) {
 				set_capacity(_capacity + 1);
 			}
 			++_size;
 			ensure_uintmul_no_overflow((_size - index), sizeof(T));
-			memmove(_head + index + 1, _head + index, (_size - index) * sizeof(T));
+			Memory::move(_head + index + 1, _head + index, (_size - index) * sizeof(T));
 			_head[index] = item;
 		}
 
-		void remove_at(uint32_t index, bool shrink = false) {
+		void remove_at(UInt32 index, bool shrink = false) {
 			ensure(index >= 0 && index < _size);
 			if (index != _size - 1) {
 				ensure_uintmul_no_overflow((_size - index), sizeof(T));
-				memmove(_head + index - 1, _head + index, (_size - index) * sizeof(T));
+				Memory::move(_head + index - 1, _head + index, (_size - index) * sizeof(T));
 			}
 			--_size;
 			if (shrink) {
@@ -117,7 +118,7 @@ namespace Common {
 			}
 		}
 
-		void set_capacity(size_t capacity) {
+		void set_capacity(Size capacity) {
 			ensure(capacity >= _size);
 			if (_capacity == capacity) {
 				return;
@@ -127,10 +128,12 @@ namespace Common {
 			if (_capacity > 0) {
 				ensure_uintmul_no_overflow(_capacity, sizeof(T));
 				T* copy = (T*)Memory::alloc(_capacity * sizeof(T));
-				memcpy(copy, _head, _size * sizeof(T));
+				Memory::copy(copy, _head, _size * sizeof(T));
 				newPtr = copy;
 			}
-			free(_head);
+			if (_head != nullptr) {
+				Memory::release(_head);
+			}
 			_head = newPtr;
 		}
 
@@ -142,7 +145,7 @@ namespace Common {
 		}
 
 	protected:
-		void setup(const T* items, size_t itemCount, size_t capacity) {
+		void setup(const T* items, Size itemCount, Size capacity) {
 			_size = 0;
 			_capacity = 0;
 			_head = nullptr;
@@ -157,8 +160,8 @@ namespace Common {
 			}
 		}
 
-		size_t _size;
-		size_t _capacity;
+		Size _size;
+		Size _capacity;
 		T* _head;
 	};
 }

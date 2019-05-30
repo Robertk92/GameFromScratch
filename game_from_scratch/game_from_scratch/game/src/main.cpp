@@ -1,46 +1,24 @@
+#pragma comment(lib, "common.lib")
 
-#include <common/windows/console.h>
 #include <common/system/system.h>
-
+#include <common/platform/platform_dialogue.h>
 #include <common/collections/collections.h>
+#include <common/diagnostics/assertion.h>
+#include <stdio.h>
 
-
-#include <iostream>
-#include <vector>
 
 using namespace Common;
 
+
+
 int main(int argc, char** argv) {
-	String myString = " van ";
-
-	String str = "abcdefghijklmnopqrstuvwxyzjemoeder";
-	reverse_foreach_skip(chr, str, 1) {
-		std::cout << *chr;
-	}
 	
-	std::string vanStd = " van ";
+	Out::log("Welcome.");
+	int t = 0;
+	int b = 1;
 
-	
-//	std::cout << hallo.c_str() << std::endl;
-	while(true) {
-		//std::string tt = "Hoedje" + vanStd + "papier";
-		ArrayList<String> strings = ArrayList<String>();
-		for (size_t i = 0; i < 10000; i++)
-		{
-			String s = "Hoedje" + myString + "papier";
-			s += " en van karton";
-			
-			strings.push(s);
-		}
-		strings.clear();
+	ensure(t == b && "T is niet B");
 
-		/*std::vector<std::string> stdStrings = std::vector<std::string>();
-		for (size_t i = 0; i < 10000; i++)
-		{
-			std::string s2 = "Hoedje" + vanStd + "papier.";
-			stdStrings.push_back(s2);
-		}
-		stdStrings.clear();*/
-	}
+	getchar();
 	return 0;
 }

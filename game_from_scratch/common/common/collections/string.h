@@ -2,9 +2,8 @@
 #define __STRING_GUARD__
 
 #include <common/system/system.h>
-#include <common/system/memory.h>
 #include <common/collections/collection.h>
-#include <common/diagnostics/assertion.h>
+#include <common/system/memory.h>
 #include <string.h> // C header 
 
 namespace Common {
@@ -29,11 +28,11 @@ namespace Common {
 			setup(stringTerminator);
 		}
 
-		String(const char* chars, size_t capacity = 0) {
+		String(const char* chars, Size capacity = 0) {
 			setup(chars);
 		}
 
-		template<size_t N> String(char(&items)[N]) {
+		template<Size N> String(char(&items)[N]) {
 			setup(items);
 		}
 
@@ -42,7 +41,17 @@ namespace Common {
 		}
 
 		virtual ~String() {
-			free(_head);
+			if (_head != nullptr) {
+				Memory::release(_head);
+			}
+		}
+
+		static String empty() {
+			return String(stringTerminator);
+		}
+
+		static String new_line() {
+			return String("\n");
 		}
 
 		BaseIterator begin() {
@@ -61,7 +70,7 @@ namespace Common {
 			return ReverseIterator(_head + _size - 1, _head + 1);
 		}
 
-		size_t size() const override {
+		Size size() const override {
 			return _size;
 		}
 
@@ -89,10 +98,6 @@ namespace Common {
 			return *this;
 		}
 
-		static String empty() {
-			return String(stringTerminator);
-		}
-
 		const char* c_str() const {
 			if (_head == nullptr) {
 				return stringTerminator;
@@ -112,7 +117,19 @@ namespace Common {
 			return append(str);
 		}
 
-		inline friend String operator+(String& lhs, String& rhs) {
+		inline friend String operator+(const String& lhs, const String& rhs) {
+			String combined = lhs;
+			combined.append(rhs);
+			return combined;
+		}
+
+		inline friend String operator+(String& lhs, String rhs) {
+			String combined = lhs;
+			combined.append(rhs);
+			return combined;
+		}
+
+		inline friend String operator+(String lhs, String& rhs) {
 			String combined = lhs;
 			combined.append(rhs);
 			return combined;
@@ -124,6 +141,8 @@ namespace Common {
 			return str;
 		}
 
+		inline char& operator[] (UInt32 index) { return _head[index]; }
+
 	private:
 		void setup(const char* data) {
 			_head = nullptr;
@@ -133,7 +152,7 @@ namespace Common {
 
 		void set_chars(const char* chars) {
 			if (_head != nullptr) {
-				free(_head);
+				Memory::release(_head);
 			}
 			_size = strlen(chars);
 			_head = (char*)Memory::alloc(_size * sizeof(char) + 1);
@@ -141,8 +160,8 @@ namespace Common {
 		}
 
 		void add_chars(const char* chars, bool append) {
-			size_t lhsSize = strlen(chars);
-			size_t combinedSize = lhsSize + size();
+			Size lhsSize = strlen(chars);
+			Size combinedSize = lhsSize + size();
 			char* combined = (char*)Memory::alloc(combinedSize + 2);
 			if (append) {
 				strncpy_s(combined, size() + 1, c_str(), _TRUNCATE);
@@ -153,11 +172,11 @@ namespace Common {
 				strncpy_s(combined + lhsSize, size() + 1, c_str(), _TRUNCATE);
 			}
 			set_chars(combined);
-			free(combined);
+			Memory::release(combined);
 		}
 
 	private:
-		size_t _size;
+		Size _size;
 		char* _head;
 	};
 }

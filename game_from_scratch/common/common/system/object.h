@@ -8,7 +8,6 @@ namespace Common {
 	public:
 		virtual ~Object() = 0;
 	};
-	Object::~Object() { }
 }
 
 #endif //__OBJECT_GUARD__

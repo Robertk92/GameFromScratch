@@ -75,7 +75,7 @@ namespace Common {
 			}
 
 			inline void operator+=(int increment) {
-				for (size_t i = 0; i < increment; ++i) {
+				for (Size i = 0; i < increment; ++i) {
 					next();
 				}
 			}
@@ -119,13 +119,13 @@ namespace Common {
 			}
 
 			inline void operator-=(int decrement) {
-				for (size_t i = 0; i < decrement; ++i) {
+				for (Size i = 0; i < decrement; ++i) {
 					next();
 				}
 			}
 
 			inline ReverseIterator& operator--(int decrement) {
-				for (size_t i = 0; i < decrement; ++i) {
+				for (Size i = 0; i < decrement; ++i) {
 					next();
 				}
 				return *this;
@@ -155,7 +155,7 @@ namespace Common {
 
 	public:
 		virtual ~Collection<T>() { }
-		virtual size_t size() const = 0;
+		virtual Size size() const = 0;
 		virtual const T* head() const = 0;
 	};
 }
