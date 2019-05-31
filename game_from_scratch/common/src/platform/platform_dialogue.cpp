@@ -11,27 +11,27 @@ void Common::PlatformDialogue::show(String& msg, const EPlatformDialogueType& di
 }
 
 #if defined(_WIN32) || defined(_WIN64)
-	#include <common/platform/windows/platform_windows.h>
+	#include <common/platform/windows/win_utility.h>
 	void Common::PlatformDialogue::show_internal(String& msg, const EPlatformDialogueType& dialogueType) {
 		switch (dialogueType) {
 			case Info: {
 				msg.prepend("Message: ");
 				const char* msg_c = msg.c_str();
-				const wchar_t* wcMsg = PlatformWindows::to_wchar_ptr(msg_c);
+				const wchar_t* wcMsg = WinUtility::to_wchar_ptr(msg_c);
 				MessageBox(NULL, wcMsg, (LPCWSTR)L"Message", MB_OK | MB_ICONINFORMATION);
 				break;
 			}
 			case Warning: {
 				msg.prepend("Warning: ");
 				const char* msg_c = msg.c_str();
-				const wchar_t* wcMsg = PlatformWindows::to_wchar_ptr(msg_c);
+				const wchar_t* wcMsg = WinUtility::to_wchar_ptr(msg_c);
 				MessageBox(NULL, wcMsg, (LPCWSTR)L"Warning", MB_OK | MB_ICONWARNING);
 				break;
 			}
 			case Error: {
 				msg.prepend("Error: ");
 				const char* msg_c = msg.c_str();
-				const wchar_t* wcMsg = PlatformWindows::to_wchar_ptr(msg_c);
+				const wchar_t* wcMsg = WinUtility::to_wchar_ptr(msg_c);
 				MessageBox(NULL, wcMsg, (LPCWSTR)L"Error", MB_OK | MB_ICONERROR);
 				break;
 			}

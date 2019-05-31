@@ -1,15 +1,10 @@
 #pragma comment(lib, "common.lib")
 
 #include <common/system/system.h>
-#include <common/platform/platform_dialogue.h>
-#include <common/collections/collections.h>
-#include <common/diagnostics/assertion.h>
+#include <common/platform/platform_window.h>
 #include <stdio.h>
-
-
+#include <string>
 using namespace Common;
-
-
 
 int main(int argc, char** argv) {
 	
@@ -17,8 +12,15 @@ int main(int argc, char** argv) {
 	int t = 0;
 	int b = 1;
 
-	ensure(t == b && "T is niet B");
-
-	getchar();
+	String tg = "Hallo";
+	
+	WindowOptions options = WindowOptions();
+	options.width = 1280;
+	options.height = 720;
+	options.title = "Game from Scratch";
+	
+	PlatformWindow window = PlatformWindow(options);
+	
+	
 	return 0;
 }

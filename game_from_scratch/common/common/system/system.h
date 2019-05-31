@@ -25,15 +25,15 @@ typedef Int64	IntPtr;
 	// TODO_LINUX: include linux system header
 #endif
 
+
 namespace Common {
 	class String;
 	class COMMON Out {
 	public:
 		static void log_no_newline(const String& str);
 		static void log(const String& str);
-		static void error(const String& errStr);
-		static void error(const char* err);
-		static void error(const char* err, const char* file, int line);
+		static void log_err(const String& str);
+		static void log_err(const char* chars);
 
 	private:
 		static void log_internal(const char* chars);

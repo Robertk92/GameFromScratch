@@ -54,6 +54,14 @@ namespace Common {
 			return String("\n");
 		}
 
+		static String true_str() {
+			return String("true");
+		}
+
+		static String false_str() {
+			return String("false");
+		}
+
 		BaseIterator begin() {
 			return Iterator(_head, _head + _size);
 		}
@@ -105,8 +113,9 @@ namespace Common {
 			return _head;
 		}
 
-		inline String operator=(const String& rhs) {
-			return String(rhs);
+		inline String& operator=(String&& rhs) {
+			set_chars(rhs.c_str());
+			return (*this);
 		}
 
 		inline String& operator+=(const String& str) {

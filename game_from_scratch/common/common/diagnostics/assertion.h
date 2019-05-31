@@ -28,11 +28,11 @@
 	#endif
 #endif
 
-#define ensure(expression) 										\
-	if(!(expression)) {											\
-		Common::Out::error(#expression, __FILE__, __LINE__);	\
-		break_fatal();											\
-	}															\
+#define ensure(expression) 					\
+	if(!(expression)) {						\
+		Common::Out::log_err(#expression);	\
+		break_fatal();						\
+	}										\
 	
 #define ensure_malloc_success(mallocFunc) ensure(mallocFunc != nullptr && "Memory allocation failed");
 #define ensure_intmul_no_overflow(a, b) ensure(a <= INT_MAX / b && "Mul operation overflow");
