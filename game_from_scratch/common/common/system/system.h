@@ -25,7 +25,6 @@ typedef Int64	IntPtr;
 	// TODO_LINUX: include linux system header
 #endif
 
-
 namespace Common {
 	class String;
 	class COMMON Out {

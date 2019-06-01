@@ -1,9 +1,12 @@
 #pragma comment(lib, "common.lib")
 
 #include <common/system/system.h>
-#include <common/platform/platform_window.h>
+#include <common/window/window.h>
+#include <common/threading/thread.h>
 #include <stdio.h>
 #include <string>
+#include <common/system/convert.h>
+
 using namespace Common;
 
 int main(int argc, char** argv) {
@@ -19,8 +22,16 @@ int main(int argc, char** argv) {
 	options.height = 720;
 	options.title = "Game from Scratch";
 	
-	PlatformWindow window = PlatformWindow(options);
-	
+	Window window = Window(options);
+
+	WindowMessage msg;
+	while (window.is_open()) {
+		if (window.poll_message(&msg)) {
+			Out::log(Convert::to_string(msg.type));
+		}
+		window.draw();
+		Thread::sleep_ms(100);
+	}
 	
 	return 0;
 }

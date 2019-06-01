@@ -34,7 +34,6 @@
 		break_fatal();						\
 	}										\
 	
-#define ensure_malloc_success(mallocFunc) ensure(mallocFunc != nullptr && "Memory allocation failed");
 #define ensure_intmul_no_overflow(a, b) ensure(a <= INT_MAX / b && "Mul operation overflow");
 #define ensure_uintmul_no_overflow(a, b) ensure(a <= UINT_MAX / b && "Mul operation overflow");
 

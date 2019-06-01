@@ -14,7 +14,7 @@ namespace Common {
 		const UInt32* buffer() const;
 
 		void set_pixel(int x, int y, UInt32 value);
-
+		
 	private:
 		UInt32* _rgbBuffer;
 		Size _width;
