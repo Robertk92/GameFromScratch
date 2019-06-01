@@ -6,12 +6,14 @@
 #include <common/platform/window_impl.h>
 
 namespace Common {
+	class Surface;
 	class COMMON WinWindowImpl : public WindowImpl {
 	public:
-		WinWindowImpl(const WindowOptions& windowOptions);
+		WinWindowImpl(const WindowOptions& windowOptions, Surface* surface);
 		virtual ~WinWindowImpl();
 
 		void set_size(int width, int height) override;
+		void draw(Surface* surface);
 
 	private:
 		HWND _hwnd;

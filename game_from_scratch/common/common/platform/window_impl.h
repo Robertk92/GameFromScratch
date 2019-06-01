@@ -5,9 +5,10 @@
 #include <common/platform/window_options.h>
 
 namespace Common {
+	class Surface;
 	class COMMON WindowImpl {
 	public:
-		WindowImpl(const WindowOptions& windowOptions) { }
+		WindowImpl(const WindowOptions& windowOptions, Surface* surface) { }
 		virtual ~WindowImpl() { }
 
 		virtual void set_size(int width, int height) = 0;

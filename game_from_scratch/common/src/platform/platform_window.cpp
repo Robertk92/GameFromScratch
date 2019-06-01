@@ -12,9 +12,9 @@
 	not_implemented();
 #endif
 
-Common::PlatformWindow::PlatformWindow(const WindowOptions& options) {
+Common::PlatformWindow::PlatformWindow(const WindowOptions& options) : Surface(options.width, options.height) {
 #if defined (_WIN32) || defined(_WIN64)
-	_window = new WinWindowImpl(options);
+	_window = new WinWindowImpl(options, this);
 #elif defined(__APPLE__)
 	not_implemented();
 #elif defined(__linux__)

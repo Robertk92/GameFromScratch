@@ -59,6 +59,9 @@
     <ClInclude Include="common\platform\window_options.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="common\graphics\surface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="common.cpp">
@@ -89,6 +92,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\platform\windows\win_window_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\surface.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

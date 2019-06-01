@@ -10,6 +10,7 @@ namespace Common {
 		static void release(void* ptr);
 		static void* move(void* source, void* destination, Size sizeInBytes);
 		static void* copy(void* source, void* destination, Size sizeInBytes);
+		static void* set(void* destination, int value, Size sizeInBytes);
 	};
 }
 #endif //__MEMORY_GUARD__

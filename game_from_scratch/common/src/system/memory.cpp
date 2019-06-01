@@ -26,3 +26,9 @@ void* Common::Memory::copy(void* source, void* destination, Size sizeInBytes) {
 	ensure(dest == destination && "Memory copy failed");
 	return dest;
 }
+
+void* Common::Memory::set(void* destination, int value, Size sizeInBytes) {
+	void* dest = memset(destination, value, sizeInBytes);
+	ensure(dest == destination && "Memory set failed");
+	return dest;
+}

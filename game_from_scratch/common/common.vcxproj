@@ -169,6 +169,7 @@
     <ClInclude Include="common\collections\linkedlist.h" />
     <ClInclude Include="common\collections\string.h" />
     <ClInclude Include="common\diagnostics\assertion.h" />
+    <ClInclude Include="common\graphics\surface.h" />
     <ClInclude Include="common\platform\window_impl.h" />
     <ClInclude Include="common\platform\platform_dialogue.h" />
     <ClInclude Include="common\platform\platform_window.h" />
@@ -183,6 +184,7 @@
   <ItemGroup>
     <ClCompile Include="common.cpp" />
     <ClCompile Include="src\diagnostics\assertion.cpp" />
+    <ClCompile Include="src\graphics\surface.cpp" />
     <ClCompile Include="src\platform\platform_dialogue.cpp" />
     <ClCompile Include="src\platform\platform_window.cpp" />
     <ClCompile Include="src\platform\windows\win_utility.cpp" />
