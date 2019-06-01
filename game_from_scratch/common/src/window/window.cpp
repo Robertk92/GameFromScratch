@@ -36,7 +36,7 @@ void Common::Window::set_size(int width, int height) {
 }
 
 const bool Common::Window::is_open() const {
-	return _window != nullptr;
+	return _window->is_open();
 }
 
 void Common::Window::draw() {

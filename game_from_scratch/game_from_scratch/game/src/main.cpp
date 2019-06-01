@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <string>
 #include <common/system/convert.h>
+#include "common/window/dialogue_window.h"
 
 using namespace Common;
 
@@ -23,7 +24,7 @@ int main(int argc, char** argv) {
 	options.title = "Game from Scratch";
 	
 	Window window = Window(options);
-
+	
 	WindowMessage msg;
 	while (window.is_open()) {
 		if (window.poll_message(&msg)) {

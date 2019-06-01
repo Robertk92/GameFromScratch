@@ -15,6 +15,7 @@ namespace Common {
 		void set_size(int width, int height) override;
 		void draw() override;
 		bool poll_message(WindowMessage* msg) override;
+		bool is_open() override;
 
 	private:
 		UInt64 _sleepMs;

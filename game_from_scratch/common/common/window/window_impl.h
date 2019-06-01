@@ -15,6 +15,7 @@ namespace Common {
 		virtual void set_size(int width, int height) = 0;
 		virtual bool poll_message(WindowMessage* msg) = 0;
 		virtual void draw() = 0;
+		virtual bool is_open() = 0;
 	};
 }
 

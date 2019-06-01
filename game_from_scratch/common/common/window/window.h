@@ -9,11 +9,14 @@
 namespace Common {
 	enum COMMON EWindowMessageType {
 		None,
-		Quit
+		Close
 	};
 
 	struct COMMON WindowMessage {
 		EWindowMessageType type;
+		WindowMessage() {
+			type = EWindowMessageType::None;
+		}
 	};
 
 	class WindowImpl;

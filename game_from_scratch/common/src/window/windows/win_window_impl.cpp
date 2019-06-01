@@ -9,13 +9,44 @@
 
 using namespace Common;
 
-// dummy
+namespace __WndWindowGlobal {
+	bool isWndWindowOpen;
+	WindowMessage* msg;
+}
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+	if (__WndWindowGlobal::msg != nullptr) {
+		switch (message)
+		{
+		case WM_CREATE:
+			break;
+		case WM_ERASEBKGND:
+			return (LRESULT)1;
+		case WM_QUIT:
+			PostQuitMessage(0);
+			__WndWindowGlobal::isWndWindowOpen = false;
+			__WndWindowGlobal::msg->type = EWindowMessageType::Close;
+			break;
+		case WM_CLOSE:
+			PostQuitMessage(0);
+			__WndWindowGlobal::isWndWindowOpen = false;
+			__WndWindowGlobal::msg->type = EWindowMessageType::Close;
+			break;
+		default:
+			break;
+		}
+	}
+	else {
+		if (message == WM_CLOSE) {
+			PostQuitMessage(0);
+		}
+	}
 	return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
 Common::WinWindowImpl::WinWindowImpl(const WindowOptions& windowOptions, Surface* surface) : WindowImpl(windowOptions, surface) {
 	this->_surface = surface;
+	__WndWindowGlobal::isWndWindowOpen = true;
 	_sleepMs = 0;
 	_hwnd = NULL;
 
@@ -105,7 +136,8 @@ void Common::WinWindowImpl::draw() {
 
 	for (Size y = 0; y < _surface->height() / 2; ++y) {
 		for (Size x = 0; x < _surface->width() / 2; ++x) {
-			_surface->set_pixel(x, y, 0x0000FF00);
+			
+			_surface->set_pixel(x, y, rand());
 		}
 	}
 
@@ -131,31 +163,17 @@ void Common::WinWindowImpl::draw() {
 
 bool Common::WinWindowImpl::poll_message(WindowMessage* msg) {
 	MSG winMsg;
-	if (PeekMessage(&winMsg, NULL, 0, 0, PM_REMOVE)) {
-		msg->type = EWindowMessageType::None;
-		switch (winMsg.message)
-		{
-		case WM_CREATE:
-			break;
-		case WM_ERASEBKGND:
-			return (LRESULT)1;
-		case WM_QUIT:
-			msg->type = EWindowMessageType::Quit;
-			break;
-		case WM_DESTROY:
-			msg->type = EWindowMessageType::Quit;
-			break;
-		case WM_CLOSE:
-			msg->type = EWindowMessageType::Quit;
-			break;
-		default:
-			break;
-		}
-		
+	__WndWindowGlobal::msg = msg;
+	while (PeekMessage(&winMsg, NULL, 0, 0, PM_REMOVE) > 0) {
 		TranslateMessage(&winMsg);
 		DispatchMessage(&winMsg);
+
 		return msg->type != EWindowMessageType::None;
 	}
+}
+
+bool Common::WinWindowImpl::is_open() {
+	return __WndWindowGlobal::isWndWindowOpen;
 }
 
 #endif//#if defined(_WIN32) || defined(_WIN64)
