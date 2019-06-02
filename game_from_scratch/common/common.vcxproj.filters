@@ -65,6 +65,24 @@
     <ClInclude Include="common\threading\thread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="common\system\timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\system\timespan.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\system\math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\threading\thread_impl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\threading\windows\win_thread_impl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="common\system\delegate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="common.cpp">
@@ -101,6 +119,24 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\threading\thread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\timespan.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\math.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\threading\thread_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\threading\windows\win_thread_impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\system\delegate.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

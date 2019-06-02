@@ -3,12 +3,6 @@
 #include <stdio.h>
 #include <stdint.h>
 
-Common::String Common::Convert::to_string(Int64 value) {
-	char vOut[21];
-	_i64toa_s(value, vOut, sizeof(vOut), 10);
-	return String(vOut);
-}
-
 Common::String Common::Convert::to_string(Int32 value) {
 	char vOut[12];
 	_itoa_s(value, vOut, sizeof(vOut), 10);
@@ -23,12 +17,6 @@ Common::String Common::Convert::to_string(Int16 value) {
 
 Common::String Common::Convert::to_string(Int8 value) {
 	char vOut[2] = { value, 0 };
-	return String(vOut);
-}
-
-Common::String Common::Convert::to_string(UInt64 value) {
-	char vOut[21];
-	_ui64toa_s(value, vOut, sizeof(vOut), 10);
 	return String(vOut);
 }
 

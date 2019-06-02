@@ -7,11 +7,9 @@ namespace Common {
 	class String;
 	class COMMON Convert {
 	public:
-		static String to_string(Int64 value);
 		static String to_string(Int32 value);
 		static String to_string(Int16 value);
 		static String to_string(Int8 value);
-		static String to_string(UInt64 value);
 		static String to_string(UInt32 value);
 		static String to_string(UInt16 value);
 		static String to_string(UInt8 value);

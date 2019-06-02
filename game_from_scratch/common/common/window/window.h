@@ -32,7 +32,7 @@ namespace Common {
 		void close();
 
 	private:
-		WindowImpl* _window;
+		WindowImpl* _windowImpl;
 	};
 }
 

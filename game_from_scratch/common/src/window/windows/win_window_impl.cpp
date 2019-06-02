@@ -136,7 +136,6 @@ void Common::WinWindowImpl::draw() {
 
 	for (Size y = 0; y < _surface->height() / 2; ++y) {
 		for (Size x = 0; x < _surface->width() / 2; ++x) {
-			
 			_surface->set_pixel(x, y, rand());
 		}
 	}
@@ -164,10 +163,9 @@ void Common::WinWindowImpl::draw() {
 bool Common::WinWindowImpl::poll_message(WindowMessage* msg) {
 	MSG winMsg;
 	__WndWindowGlobal::msg = msg;
-	while (PeekMessage(&winMsg, NULL, 0, 0, PM_REMOVE) > 0) {
+	if (PeekMessage(&winMsg, NULL, 0, 0, PM_REMOVE) > 0) {
 		TranslateMessage(&winMsg);
 		DispatchMessage(&winMsg);
-
 		return msg->type != EWindowMessageType::None;
 	}
 }

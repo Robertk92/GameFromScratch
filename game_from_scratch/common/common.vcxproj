@@ -170,7 +170,13 @@
     <ClInclude Include="common\collections\string.h" />
     <ClInclude Include="common\diagnostics\assertion.h" />
     <ClInclude Include="common\graphics\surface.h" />
+    <ClInclude Include="common\system\delegate.h" />
+    <ClInclude Include="common\system\math.h" />
+    <ClInclude Include="common\system\timer.h" />
+    <ClInclude Include="common\system\timespan.h" />
     <ClInclude Include="common\threading\thread.h" />
+    <ClInclude Include="common\threading\thread_impl.h" />
+    <ClInclude Include="common\threading\windows\win_thread_impl.h" />
     <ClInclude Include="common\window\window_impl.h" />
     <ClInclude Include="common\window\dialogue_window.h" />
     <ClInclude Include="common\window\window.h" />
@@ -186,7 +192,13 @@
     <ClCompile Include="common.cpp" />
     <ClCompile Include="src\diagnostics\assertion.cpp" />
     <ClCompile Include="src\graphics\surface.cpp" />
+    <ClCompile Include="src\system\delegate.cpp" />
+    <ClCompile Include="src\system\math.cpp" />
+    <ClCompile Include="src\system\timer.cpp" />
+    <ClCompile Include="src\system\timespan.cpp" />
     <ClCompile Include="src\threading\thread.cpp" />
+    <ClCompile Include="src\threading\thread_impl.cpp" />
+    <ClCompile Include="src\threading\windows\win_thread_impl.cpp" />
     <ClCompile Include="src\window\dialogue_window.cpp" />
     <ClCompile Include="src\window\window.cpp" />
     <ClCompile Include="src\platform_utility\win_utility.cpp" />

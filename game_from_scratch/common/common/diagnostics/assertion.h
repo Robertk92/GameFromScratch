@@ -38,6 +38,7 @@
 #define ensure_uintmul_no_overflow(a, b) ensure(a <= UINT_MAX / b && "Mul operation overflow");
 
 #define not_implemented() ensure(false && "Not implemented")
+#define os_not_supported() ensure(false && "Operating system not supported, supported operating systems: Windows, Mac OSX, Linux")
 #define bad_code(reason) ensure(false && reason)
 
 #endif //__ASSERTION_GUARD__

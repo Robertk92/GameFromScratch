@@ -4,20 +4,19 @@
 typedef __int8				Int8;
 typedef __int16				Int16;
 typedef __int32				Int32;
-typedef __int64				Int64;
 typedef unsigned __int8		UInt8;
 typedef unsigned __int16	UInt16;
 typedef unsigned __int32	UInt32;
-typedef unsigned __int64	UInt64;
 
-typedef UInt64	Size;
-typedef Int64	PtrDiff;
-typedef Int64	IntPtr;
+typedef UInt32	Size;
+typedef Int32	PtrDiff;
+typedef Int32	IntPtr;
 
 #define _CRT_SECURE_NO_WARNINGS
+
 #define COMMON __declspec(dllexport)
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32)
 	#include <windows.h>
 #elif defined(__Apple__)
 	// TODO_APPLE: include apple system header

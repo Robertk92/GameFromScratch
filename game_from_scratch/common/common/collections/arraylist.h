@@ -95,14 +95,14 @@ namespace Common {
 			}
 		}
 
-		void insert(T item, UInt32 index) {
+		void insert(UInt32 index, T item) {
 			ensure(index >= 0 && index < _size);
 			if (_size >= _capacity) {
 				set_capacity(_capacity + 1);
 			}
 			++_size;
 			ensure_uintmul_no_overflow((_size - index), sizeof(T));
-			Memory::move(_head + index + 1, _head + index, (_size - index) * sizeof(T));
+			Memory::move(_head + index, _head + index + 1, (_size - index) * sizeof(T));
 			_head[index] = item;
 		}
 
@@ -110,7 +110,7 @@ namespace Common {
 			ensure(index >= 0 && index < _size);
 			if (index != _size - 1) {
 				ensure_uintmul_no_overflow((_size - index), sizeof(T));
-				Memory::move(_head + index - 1, _head + index, (_size - index) * sizeof(T));
+				Memory::move(_head + index, _head + index - 1, (_size - index) * sizeof(T));
 			}
 			--_size;
 			if (shrink) {
@@ -128,7 +128,7 @@ namespace Common {
 			if (_capacity > 0) {
 				ensure_uintmul_no_overflow(_capacity, sizeof(T));
 				T* copy = (T*)Memory::alloc(_capacity * sizeof(T));
-				Memory::copy(copy, _head, _size * sizeof(T));
+				Memory::copy(_head, copy, _size * sizeof(T));
 				newPtr = copy;
 			}
 			if (_head != nullptr) {

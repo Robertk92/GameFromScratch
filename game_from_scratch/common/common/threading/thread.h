@@ -4,9 +4,16 @@
 #include <common/system/system.h>
 
 namespace Common {
-	class COMMON Thread {
+	class ThreadImpl;
+	class COMMON Thread final {
 	public:
-		static void sleep_ms(UInt64 milliseconds);
+		Thread();
+		~Thread();
+
+		static void sleep_ms(UInt32 milliseconds);
+
+	private:
+		ThreadImpl* _threadImpl;
 	};
 }
 #endif//__THREAD_GUARD__

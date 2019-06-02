@@ -10,7 +10,7 @@ void Common::DialogueWindow::show(String& msg, const EPlatformDialogueType& dial
 	show_internal(msg, dialogueType);
 }
 
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) 
 	#include <common/platform_utility/win_utility.h>
 	void Common::DialogueWindow::show_internal(String& msg, const EPlatformDialogueType& dialogueType) {
 		switch (dialogueType) {
