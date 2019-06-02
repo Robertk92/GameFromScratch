@@ -14,19 +14,13 @@ using namespace Common;
 class TestMember {
 public:
 	TestMember() {
-		MemberDelegate<TestMember> del = MemberDelegate<TestMember>();
-		
+		MemberDelegate<TestMember, int> del = MemberDelegate<TestMember, int>();
 		del.bind(this, &TestMember::test);
-		del.bind(this, &TestMember::test2);
-		del.invoke();
+		del.invoke(31337);
 	}
 
-	void test2() {
-		Out::log("test 2");
-	}
-
-	void test() {
-		Out::log("test");
+	void test(int t) {
+		Out::log(Convert::to_string(t));
 	}
 };
 
