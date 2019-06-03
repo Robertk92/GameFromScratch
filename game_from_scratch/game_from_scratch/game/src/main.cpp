@@ -14,27 +14,37 @@ using namespace Common;
 class TestMember {
 public:
 	TestMember() {
-		MemberDelegate<TestMember, int> del = MemberDelegate<TestMember, int>();
+		MemberDelegate<TestMember, String&> del = MemberDelegate<TestMember, String&>();
 		del.bind(this, &TestMember::test);
-		del.invoke(31337);
+		del.bind(this, &TestMember::test);
+		String str = "Ik vind het allemaal heelaaml hartstikke mooi";
+		del.invoke(str);
 	}
 
-	void test(int t) {
-		Out::log(Convert::to_string(t));
+	void test(String& t) {
+		Out::log(t);
 	}
 };
 
+void hh(int d) {
+	Out::log(Convert::to_string(d));
+}
+
 int main(int argc, char** argv) {
 	Out::log("Welcome.");
-	
+
 	WindowOptions options = WindowOptions();
 	options.width = 1280;
 	options.height = 720;
 	options.title = "Game from Scratch";
 	
+	GlobalDelegate<int> globDel = GlobalDelegate<int>();
+	globDel.bind(hh);
+	globDel.invoke(4);
+
 	Window window = Window(options);
 	TestMember t = TestMember();
-
+	
 	WindowMessage msg;
 	while (window.is_open()) {
 		if (window.poll_message(&msg)) {

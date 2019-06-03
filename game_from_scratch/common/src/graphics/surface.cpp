@@ -1,7 +1,7 @@
 #include <common/graphics/surface.h>
 #include <common/system/memory.h>
 
-Common::Surface::Surface(int width, int height) {
+Common::Surface::Surface(Size width, Size height) {
 	this->_width = width;
 	this->_height = height;
 	_rgbBuffer = (UInt32*)Memory::alloc(width * height * sizeof(UInt32));
@@ -28,6 +28,6 @@ const UInt32* Common::Surface::buffer() const {
 	return _rgbBuffer;
 }
 
-void Common::Surface::set_pixel(int x, int y, UInt32 value) {
+void Common::Surface::set_pixel(UInt32 x, UInt32 y, UInt32 value) {
 	_rgbBuffer[x + _width * y] = value;
 }

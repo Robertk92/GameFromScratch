@@ -6,7 +6,7 @@
 
 namespace Common {
 	class Surface;
-	class WindowMessage;
+	struct WindowMessage;
 	class COMMON WindowImpl {
 	public:
 		WindowImpl(const WindowOptions& windowOptions, Surface* surface) { }

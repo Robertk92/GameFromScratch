@@ -6,7 +6,7 @@ Common::Timespan::Timespan(UInt32 milliseconds) {
 }
 
 Common::Timespan Common::Timespan::FromSeconds(double seconds) {
-	return Timespan(ceil(seconds * 1000.0));
+	return Timespan(static_cast<UInt32>(ceil(seconds * 1000.0)));
 }
 
 const UInt32 Common::Timespan::milliseconds() const {

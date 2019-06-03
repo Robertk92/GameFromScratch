@@ -33,7 +33,7 @@ Common::String Common::Convert::to_string(UInt16 value) {
 }
 
 Common::String Common::Convert::to_string(UInt8 value) {
-	char vOut[2] = { value, 0 };
+	char vOut[2] = { static_cast<char>(value), 0 };
 	return String(vOut);
 }
 

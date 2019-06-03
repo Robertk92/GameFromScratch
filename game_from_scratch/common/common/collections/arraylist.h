@@ -39,10 +39,6 @@ namespace Common {
 			setup(items, N, N);
 		}
 
-		ArrayList(ArrayList<T>& collection, bool sameCapacity = false) {
-			setup(collection._head, collection._size, sameCapacity ? collection._capacity : collection._size);
-		}
-
 		ArrayList(const ArrayList<T>& copy) {
 			setup(copy._head, copy._size, copy._capacity);
 		}
@@ -50,6 +46,7 @@ namespace Common {
 		virtual ~ArrayList() {
 			if (_head != nullptr) {
 				Memory::release(_head);
+				_head = nullptr;
 			}
 		}
 
@@ -107,10 +104,10 @@ namespace Common {
 		}
 
 		void remove_at(UInt32 index, bool shrink = false) {
-			ensure(index >= 0 && index < _size);
+			ensure(index < _size);
 			if (index != _size - 1) {
 				ensure_uintmul_no_overflow((_size - index), sizeof(T));
-				Memory::move(_head + index, _head + index - 1, (_size - index) * sizeof(T));
+				Memory::move(_head + index + 1, _head + index, (_size - index - 1) * sizeof(T));
 			}
 			--_size;
 			if (shrink) {
@@ -133,6 +130,7 @@ namespace Common {
 			}
 			if (_head != nullptr) {
 				Memory::release(_head);
+				_head = nullptr;
 			}
 			_head = newPtr;
 		}

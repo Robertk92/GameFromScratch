@@ -6,14 +6,14 @@
 namespace Common {
 	class COMMON Surface {
 	public:
-		Surface(int width, int height);
+		Surface(Size width, Size height);
 		virtual ~Surface();
 
 		Size width() const;
 		Size height() const;
 		const UInt32* buffer() const;
 
-		void set_pixel(int x, int y, UInt32 value);
+		void set_pixel(UInt32 x, UInt32 y, UInt32 value);
 		
 	private:
 		UInt32* _rgbBuffer;

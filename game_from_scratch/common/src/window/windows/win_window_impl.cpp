@@ -1,4 +1,4 @@
-#if defined(_WIN32) || defined(_WIN64)
+#if defined(_WIN32) 
 #include <common/window/windows/win_window_impl.h>
 #include <common/platform_utility/win_utility.h>
 #include <common/window/window.h>
@@ -168,6 +168,7 @@ bool Common::WinWindowImpl::poll_message(WindowMessage* msg) {
 		DispatchMessage(&winMsg);
 		return msg->type != EWindowMessageType::None;
 	}
+	return false;
 }
 
 bool Common::WinWindowImpl::is_open() {
