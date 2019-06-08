@@ -136,9 +136,12 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\core\game.cpp" />
+    <ClCompile Include="src\worlds\test_world.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\core\game.h" />
+    <ClInclude Include="game\worlds\test_world.h" />
+    <ClInclude Include="game\worlds\worlds.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

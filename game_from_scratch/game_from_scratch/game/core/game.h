@@ -6,8 +6,9 @@ using namespace Blitwave;
 class Game : public GameInterface {
 public:
 	GameSettings game_settings() override;
+	ArrayList<World*> register_worlds() override;
+	UInt32 first_world() override;
 	void setup() override;
-	
 };
 
 #endif//__GAME_GUARD__
